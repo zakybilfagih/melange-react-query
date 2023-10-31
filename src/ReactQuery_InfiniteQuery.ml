@@ -3,6 +3,8 @@ type 'queryKey inifiniteQueryFunctionContext = {
   pageParam : int option;
 }
 
+let inifiniteQueryFunctionContext ?pageParam ~queryKey () = { queryKey; pageParam }
+
 type ('queryKey, 'queryData, 'queryError) infiniteQueryOptions = {
   queryKey : 'queryKey option;
   queryFn : ('queryKey inifiniteQueryFunctionContext -> 'queryData Js.Promise.t) option;
@@ -33,6 +35,68 @@ type ('queryKey, 'queryData, 'queryError) infiniteQueryOptions = {
   getNextPageParam : ('queryData -> int option) option;
   getPreviousPageParam : ('queryData -> int option) option;
 }
+
+let infiniteQueryOptions
+    ?queryKey
+    ?queryFn
+    ?enabled
+    ?retry
+    ?retryOnMount
+    ?retryDelay
+    ?staleTime
+    ?queryKeyHashFn
+    ?refetchInterval
+    ?refetchIntervalInBackground
+    ?refetchOnMount
+    ?refetchOnWindowFocus
+    ?refetchOnReconnect
+    ?notifyOnChangeProps
+    ?notifyOnChangePropsExclusions
+    ?onSuccess
+    ?onError
+    ?onSettled
+    ?select
+    ?suspense
+    ?keepPreviousData
+    ?structuralSharing
+    ?useErrorBoundary
+    ?initialData
+    ?initialDataUpdatedAt
+    ?placeholderData
+    ?getNextPageParam
+    ?getPreviousPageParam
+    () =
+  {
+    queryKey;
+    queryFn;
+    enabled;
+    retry;
+    retryOnMount;
+    retryDelay;
+    staleTime;
+    queryKeyHashFn;
+    refetchInterval;
+    refetchIntervalInBackground;
+    refetchOnMount;
+    refetchOnWindowFocus;
+    refetchOnReconnect;
+    notifyOnChangeProps;
+    notifyOnChangePropsExclusions;
+    onSuccess;
+    onError;
+    onSettled;
+    select;
+    suspense;
+    keepPreviousData;
+    structuralSharing;
+    useErrorBoundary;
+    initialData;
+    initialDataUpdatedAt;
+    placeholderData;
+    getNextPageParam;
+    getPreviousPageParam;
+  }
+;;
 
 type ('queryError, 'queryData) infiniteQueryResult = {
   status : ReactQuery_Types.queryStatus;

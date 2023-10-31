@@ -56,6 +56,30 @@ type ('mutationVariables, 'mutationData, 'mutationError, 'unknown) mutationOptio
   useErrorBoundary : bool option;
 }
 
+let mutationOptions
+    ?onMutate
+    ?onSuccess
+    ?onError
+    ?onSettled
+    ?retry
+    ?retryDelay
+    ?useErrorBoundary
+    ~mutationKey
+    ~mutationFn
+    () =
+  {
+    mutationKey;
+    mutationFn;
+    onMutate;
+    onSuccess;
+    onError;
+    onSettled;
+    retry;
+    retryDelay;
+    useErrorBoundary;
+  }
+;;
+
 type ('mutationVariables, 'mutationData, 'mutationError, 'unknown) mutationResult = {
   mutate :
     ('mutationVariables ->

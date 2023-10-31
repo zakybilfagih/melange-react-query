@@ -13,6 +13,8 @@ type ('queryKey, 'pageParam) queryFunctionContext = {
   pageParam : 'pageParam;
 }
 
+let queryFunctionContext ~queryKey ~pageParam = { queryKey; pageParam }
+
 type 'error retryParam =
   [ `bool of bool
   | `number of int
@@ -49,6 +51,8 @@ type 'queryData infiniteData = {
   pageParams : int array;
 }
 
+let infiniteData ~pages ~pageParams = { pages; pageParams }
+
 type queryStatus =
   [ `loading
   | `success
@@ -61,27 +65,27 @@ type ('queryData, 'queryResult) placeholderData =
   | `fn of unit -> 'queryResult option [@as "function"]
   ]
 
-module QueryFilter = struct
-  type 'queryKey t = {
-    exact : bool option;
-    type_ : [ `active | `inactive | `all ] option; [@as "type"]
-    stale : bool option;
-    fetching : bool option;
-    predicate : (query -> bool) option;
-    queryKey : 'queryKey option;
-  }
+type 'queryKey queryFilter = {
+  exact : bool option;
+  type_ : [ `active | `inactive | `all ] option; [@as "type"]
+  stale : bool option;
+  fetching : bool option;
+  predicate : (query -> bool) option;
+  queryKey : 'queryKey option;
+}
 
-  let make ?exact ?type_ ?stale ?fetching ?predicate ?queryKey () =
-    { exact; type_; stale; fetching; predicate; queryKey }
-  ;;
-end
+let queryFilter ?exact ?type_ ?stale ?fetching ?predicate ?queryKey () =
+  { exact; type_; stale; fetching; predicate; queryKey }
+;;
 
 type 'queryKey queryDataKeyOrFilter =
   [ `keys of 'queryKey
-  | `filters of 'queryKey QueryFilter.t
+  | `filters of 'queryKey queryFilter
   ]
 
 type refetchOptions = {
   throwOnError : bool;
   cancelRefetch : bool;
 }
+
+let refetchOptions ~throwOnError ~cancelRefetch = { throwOnError; cancelRefetch }

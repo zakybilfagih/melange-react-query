@@ -28,61 +28,74 @@ type infiniteQueryObserverResultProps =
 type fetchContext
 type queryBehavior = { onFetch : fetchContext -> unit }
 
+let queryBehavior ~onFetch = { onFetch }
+
 type 'data getPreviousPageParamFunction = {
   firstPage : 'data;
   allPages : 'data array;
 }
+
+let getPreviousPageParamFunction ~firstPage ~allPages = { firstPage; allPages }
 
 type 'data getNextPageParamFunction = {
   lastPage : 'data;
   allPages : 'data array;
 }
 
+let getNextPageParamFunction ~lastPage ~allPages = { lastPage; allPages }
+
 type ('error, 'data, 'queryData, 'queryKey, 'pageParam) queryObserverOptions = {
-  retry : 'error ReactQuery_Types.retryValue option;
-  retryDelay : 'error ReactQuery_Types.retryValue option;
-  cacheTime : int option;
-  isDataEqual : ('data option -> 'data -> bool) option;
+  retry : 'error ReactQuery_Types.retryValue option; [@optional]
+  retryDelay : 'error ReactQuery_Types.retryValue option; [@optional]
+  cacheTime : int option; [@optional]
+  isDataEqual : ('data option -> 'data -> bool) option; [@optional]
+  queryHash : string option; [@optional]
+  queryKey : 'queryKey option; [@optional]
+  queryKeyHashFn : ('queryKey -> string) option; [@optional]
+  initialData : (unit -> 'data) option; [@optional]
+  initialDataUpdatedAt : (unit -> int option) option; [@optional]
+  behavior : queryBehavior option; [@optional]
+  structuralSharing : bool option; [@optional]
+  getPreviousPageParam : 'data getPreviousPageParamFunction option; [@optional]
+  getNextPageParam : 'data getNextPageParamFunction option; [@optional]
+  defaulted : bool option; [@optional]
+  enabled : bool option; [@optional]
+  staleTime : int option; [@optional]
+  refetchInterval : ReactQuery_Types.refetchIntervalValue option; [@optional]
+  refetchIntervalInBackground : bool option; [@optional]
+  refetchOnWindowFocus : ReactQuery_Types.boolOrAlwaysValue option; [@optional]
+  refetchOnReconnect : ReactQuery_Types.boolOrAlwaysValue option; [@optional]
+  refetchOnMount : ReactQuery_Types.boolOrAlwaysValue option; [@optional]
+  retryOnMount : bool option; [@optional]
+  notifyOnChangeProps : notifyOnChangePropsKeys array option; [@optional]
+  notifyOnChangePropsExclusions : bool array option; [@optional]
+  onSuccess : ('data -> unit) option; [@optional]
+  onError : ('error -> unit) option; [@optional]
+  onSettled : ('data option -> 'error option -> unit) option; [@optional]
+  useErrorBoundary : bool option; [@optional]
+  select : ('queryData -> 'data) option; [@optional]
+  suspense : bool option; [@optional]
+  keepPreviousData : bool option; [@optional]
+  placeholderData : ReactQuery_Types.placeholderDataValue option; [@optional]
+  optimisticResults : bool option; [@optional]
   queryFn :
     ('queryKey, 'pageParam) ReactQuery_Types.queryFunctionContext ->
     'queryData Js.Promise.t;
-  queryHash : string option;
-  queryKey : 'queryKey option;
-  queryKeyHashFn : ('queryKey -> string) option;
-  initialData : (unit -> 'data) option;
-  initialDataUpdatedAt : (unit -> int option) option;
-  behavior : queryBehavior option;
-  structuralSharing : bool option;
-  getPreviousPageParam : 'data getPreviousPageParamFunction option;
-  getNextPageParam : 'data getNextPageParamFunction option;
-  _defaulted : bool option;
-  enabled : bool option;
-  staleTime : int option;
-  refetchInterval : ReactQuery_Types.refetchIntervalValue option;
-  refetchIntervalInBackground : bool option;
-  refetchOnWindowFocus : ReactQuery_Types.boolOrAlwaysValue option;
-  refetchOnReconnect : ReactQuery_Types.boolOrAlwaysValue option;
-  refetchOnMount : ReactQuery_Types.boolOrAlwaysValue option;
-  retryOnMount : bool option;
-  notifyOnChangeProps : notifyOnChangePropsKeys array option;
-  notifyOnChangePropsExclusions : bool array option;
-  onSuccess : ('data -> unit) option;
-  onError : ('error -> unit) option;
-  onSettled : ('data option -> 'error option -> unit) option;
-  useErrorBoundary : bool option;
-  select : ('queryData -> 'data) option;
-  suspense : bool option;
-  keepPreviousData : bool option;
-  placeholderData : ReactQuery_Types.placeholderDataValue option;
-  optimisticResults : bool option;
 }
 
 type ('error, 'data, 'queryData, 'queryKey, 'pageParam) defaultOptions = {
   queries : ('error, 'data, 'queryData, 'queryKey, 'pageParam) queryObserverOptions option;
 }
 
+let defaultOptions ?queries () = { queries }
+
 type invalidateQueryFilter = { refetchType : [ `active | `inactive | `all | `none ] }
+
+let invalidateQueryFilter ~refetchType = { refetchType }
+
 type clientRefetchOptions = { throwOnError : bool option }
+
+let clientRefetchOptions ~throwOnError = { throwOnError }
 
 type 'queryKey invalidateQueryOptions = {
   queryKey : 'queryKey option;
@@ -90,16 +103,26 @@ type 'queryKey invalidateQueryOptions = {
   refetchOptions : clientRefetchOptions option;
 }
 
+let invalidateQueryOptions ?queryKey ?filters ?refetchOptions () =
+  { queryKey; filters; refetchOptions }
+;;
+
 type 'queryKey refetchQueriesOptions = {
   queryKey : 'queryKey option;
-  filters : 'queryKey ReactQuery_Types.QueryFilter.t option;
+  filters : 'queryKey ReactQuery_Types.queryFilter option;
   refetchOptions : clientRefetchOptions option;
 }
 
+let refetchQueriesOptions ?queryKey ?filters ?refetchOptions () =
+  { queryKey; filters; refetchOptions }
+;;
+
 type 'queryKey cancelQueriesOptions = {
   queryKey : 'queryKey option;
-  filters : 'queryKey ReactQuery_Types.QueryFilter.t option;
+  filters : 'queryKey ReactQuery_Types.queryFilter option;
 }
+
+let cancelQueriesOptions ?queryKey ?filters () = { queryKey; filters }
 
 type ('queryData, 'queryError) queryState = {
   data : 'queryData option;
@@ -133,6 +156,34 @@ type ('queryKey, 'queryData, 'queryError, 'pageParam) fetchQueryOptions = {
   initialDataUpdatedAt : (unit -> int) option;
 }
 
+let fetchQueryOptions
+    ?queryKey
+    ?queryFn
+    ?retry
+    ?retryOnMount
+    ?retryDelay
+    ?staleTime
+    ?queryKeyHashFn
+    ?refetchOnMount
+    ?structuralSharing
+    ?initialData
+    ?initialDataUpdatedAt
+    () =
+  {
+    queryKey;
+    queryFn;
+    retry;
+    retryOnMount;
+    retryDelay;
+    staleTime;
+    queryKeyHashFn;
+    refetchOnMount;
+    structuralSharing;
+    initialData;
+    initialDataUpdatedAt;
+  }
+;;
+
 type ('queryKey, 'queryData, 'queryError, 'pageParams) queryClient = {
   fetchQuery :
     ('queryKey, 'queryData, 'queryError, 'pageParams) fetchQueryOptions ->
@@ -150,28 +201,28 @@ type ('queryKey, 'queryData, 'queryError, 'pageParams) queryClient = {
   setQueryData : 'queryKey -> 'queryData option -> 'queryData;
   getQueryState :
     'queryKey ->
-    'queryKey ReactQuery_Types.QueryFilter.t ->
+    'queryKey ReactQuery_Types.queryFilter ->
     ('queryData, 'queryError) queryState;
   setQueriesData :
     'queryKey ReactQuery_Types.queryDataKeyOrFilterValue ->
     ('queryData option -> 'queryData) ->
     unit;
   invalidateQueries :
-    'queryKey ReactQuery_Types.QueryFilter.t option ->
+    'queryKey ReactQuery_Types.queryFilter option ->
     clientRefetchOptions option ->
     unit Js.Promise.t;
   refetchQueries :
-    'queryKey ReactQuery_Types.QueryFilter.t option ->
+    'queryKey ReactQuery_Types.queryFilter option ->
     clientRefetchOptions option ->
     unit Js.Promise.t;
-  cancelQueries : 'queryKey ReactQuery_Types.QueryFilter.t option -> unit Js.Promise.t;
-  removeQueries : 'queryKey ReactQuery_Types.QueryFilter.t option -> unit Js.Promise.t;
+  cancelQueries : 'queryKey ReactQuery_Types.queryFilter option -> unit Js.Promise.t;
+  removeQueries : 'queryKey ReactQuery_Types.queryFilter option -> unit Js.Promise.t;
   resetQueries :
-    'queryKey ReactQuery_Types.QueryFilter.t option ->
+    'queryKey ReactQuery_Types.queryFilter option ->
     clientRefetchOptions option ->
     unit Js.Promise.t;
-  isFetching : 'queryKey ReactQuery_Types.QueryFilter.t option -> bool;
-  isMutating : 'queryKey ReactQuery_Types.QueryFilter.t option -> bool;
+  isFetching : 'queryKey ReactQuery_Types.queryFilter option -> bool;
+  isMutating : 'queryKey ReactQuery_Types.queryFilter option -> bool;
   clear : unit -> unit;
 }
 

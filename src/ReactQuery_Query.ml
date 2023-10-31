@@ -30,6 +30,64 @@ type ('queryKey, 'queryData, 'queryError, 'pageParam) queryOptions = {
   placeholderData : (unit -> 'queryData) option;
 }
 
+let queryOptions
+    ?queryKey
+    ?queryFn
+    ?enabled
+    ?retry
+    ?retryOnMount
+    ?retryDelay
+    ?staleTime
+    ?queryKeyHashFn
+    ?refetchInterval
+    ?refetchIntervalInBackground
+    ?refetchOnMount
+    ?refetchOnWindowFocus
+    ?refetchOnReconnect
+    ?notifyOnChangeProps
+    ?notifyOnChangePropsExclusions
+    ?onSuccess
+    ?onError
+    ?onSettled
+    ?select
+    ?suspense
+    ?keepPreviousData
+    ?structuralSharing
+    ?useErrorBoundary
+    ?initialData
+    ?initialDataUpdatedAt
+    ?placeholderData
+    () =
+  {
+    queryKey;
+    queryFn;
+    enabled;
+    retry;
+    retryOnMount;
+    retryDelay;
+    staleTime;
+    queryKeyHashFn;
+    refetchInterval;
+    refetchIntervalInBackground;
+    refetchOnMount;
+    refetchOnWindowFocus;
+    refetchOnReconnect;
+    notifyOnChangeProps;
+    notifyOnChangePropsExclusions;
+    onSuccess;
+    onError;
+    onSettled;
+    select;
+    suspense;
+    keepPreviousData;
+    structuralSharing;
+    useErrorBoundary;
+    initialData;
+    initialDataUpdatedAt;
+    placeholderData;
+  }
+;;
+
 type ('queryError, 'queryData) queryResult = {
   status : ReactQuery_Types.queryStatus;
   isIdle : bool;

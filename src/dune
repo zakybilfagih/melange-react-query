@@ -1,5 +1,5 @@
 (library
- (name react_query)
+ (name ReactQuery)
  (public_name melange-react-query)
  (libraries reason-react)
  (preprocess
