@@ -1,19 +1,6 @@
 # melange-react-query
 
-Bindings to react-query for [Melange](https://melange.re/).
-
-[![Issues](https://img.shields.io/github/issues/ewert-online/melange-react-query.svg)](https://github.com/ewert-online/melange-react-query/issues)
-[![Last Commit](https://img.shields.io/github/last-commit/ewert-online/melange-react-query.svg)]()
-
-## Example
-
-```reason
-Js.Promise.(
-  Fetch.fetch("/api/hellos/1")
-  |> then_(Fetch.Response.text)
-  |> then_(text => print_endline(text) |> resolve)
-);
-```
+Bindings to [@tanstack/react-query](https://tanstack.com/query/latest) for [Melange](https://melange.re/).
 
 ## Installation
 
@@ -62,20 +49,26 @@ The React Query DevTools Provider, which is responsible to initialize the React 
 The queryClient fetched from a hook
 
 ```reason
-  let queryClient = useQueryClient();
-  queryClient.fetchQuery({
-    queryKey: [|"articles"|],
-    retryOnMount: true
-  });
+  let queryClient = ReactQuery.useQueryClient();
+  let queryResult = queryClient.fetchQuery(
+    ReactQuery.fetchQueryOptions(
+      ~queryKey=[|"articles"|],
+      ~retryOnMount=true,
+      (),
+    )
+  );
 ```
 
 ### `useQuery`
 
 ```reason
-  let queryResult = useQuery({
-    queryKey: [|"articles"|],
-    queryFn: () => fetchArticles()
-  });
+  let queryResult = ReactQuery.useQuery(
+    ReactQuery.queryOptions(
+      ~queryKey=[|"articles"|],
+      ~queryFn=fetchArticles,
+      ()
+    )
+  );
 ```
 
 ### `useMutation`
@@ -83,8 +76,11 @@ The queryClient fetched from a hook
 The hook responsible to mutate a query, when update/create/delete anything
 
 ```reason
-  let mutationResult = useMutation({
-    mutationKey: [|"articles"|],
-    mutationFn: () => addArticle(article)
-  });
+  let mutationResult = ReactQuery.useMutation(
+    ReactQuery.mutationOptions(
+      ~mutationKey=[|"articles"|],
+      ~mutationFn=(article) => addArticle(article),
+      ()
+    )
+  );
 ```
