@@ -31,5 +31,5 @@ build: [
 ]
 dev-repo: "git+https://github.com/ewert-online/melange-react-query.git"
 depexts: [
-  ["react-query"] {npm-version = "^3.39.3"}
+  ["@tanstack/react-query"] {npm-version = "^4.2.1"}
 ]
