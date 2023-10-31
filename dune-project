@@ -6,6 +6,8 @@
 
 (name melange-react-query)
 
+(version 0.1.0)
+
 (source
  (github ewert-online/melange-react-query))
 
