@@ -1,4 +1,4 @@
-(lang dune 3.8)
+(lang dune 3.14)
 
 (using melange 0.1)
 
@@ -9,15 +9,15 @@
 (version 0.1.0)
 
 (source
- (github ewert-online/melange-react-query))
+ (github zakybilfagih/melange-react-query))
 
-(authors "Torben Ewert <torben@ewert-online.com>")
+(authors "M. Zaki <zilonesauer@gmail.com>")
 
-(maintainers "Torben Ewert <torben@ewert-online.com>")
+(maintainers "M. Zaki <zilonesauer@gmail.com>")
 
-(homepage "https://github.com/ewert-online/melange-react-query")
+(homepage "https://github.com/zakybilfagih/melange-react-query")
 
-(bug_reports "https://github.com/ewert-online/melange-react-query")
+(bug_reports "https://github.com/zakybilfagih/melange-react-query")
 
 (license "MIT")
 
@@ -26,9 +26,13 @@
  (synopsis "React Query support for Melange")
  (depends
   (ocaml
-   (>= "5.1"))
+   (>= "5.1.1"))
   (melange
-   (>= "2.0.0"))
+   (>= "3.0.0-51"))
+  (reason
+   (>= "3.10.0"))
   reason-react
   reason-react-ppx
-  (opam-check-npm-deps :with-test)))
+  (opam-check-npm-deps :with-test)
+  (ocaml-lsp-server :with-test)
+  (dot-merlin-reader :with-test)))

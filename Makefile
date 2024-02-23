@@ -1,4 +1,4 @@
-project_name = melange-moment
+project_name = melange-react-query
 
 DUNE = opam exec -- dune
 
@@ -13,22 +13,22 @@ help: ## Print this help message
 
 .PHONY: create-switch
 create-switch: ## Create opam switch
-	opam switch create . 5.1.0 -y --deps-only
+	opam switch create . 5.1.1 -y --deps-only
 
 .PHONY: init
 init: create-switch install ## Configure everything to develop this repository in local
 
 .PHONY: install
 install: ## Install development dependencies
-	yarn
+	pnpm i
 	opam update
-	opam install -y . --deps-only
+	opam install -y . --deps-only --with-test
 
 .PHONY: build
 build: ## Build the project
-	$(DUNE) build
+	$(DUNE) build @all
 
-.PHONY: build_verbose
+.PHONY: build-verbose
 build_verbose: ## Build the project in verbose mode
 	$(DUNE) build --verbose
 
@@ -46,7 +46,7 @@ format-check: ## Checks if format is correct
 
 .PHONY: watch
 watch: ## Watch for the filesystem and rebuild on every change
-	$(DUNE) build --watch
+	$(DUNE) build -w @@default
 
 .PHONY: test
 test: ## Run the tests

@@ -51,8 +51,8 @@ type ('mutationVariables, 'mutationData, 'mutationError, 'unknown) mutationOptio
     mutationContext Js.Nullable.t ->
     'unknown Js.Promise.t)
     option;
-  retry : 'mutationError ReactQuery_Types.retryValue option;
-  retryDelay : 'mutationError ReactQuery_Types.retryDelayValue option;
+  retry : 'mutationError ReactQuery__Types.retryValue option;
+  retryDelay : 'mutationError ReactQuery__Types.retryDelayValue option;
   useErrorBoundary : bool option;
 }
 
@@ -104,4 +104,4 @@ external useMutation :
   ('mutationVariables, 'mutationData, 'mutationError, 'unknown) mutationOptions ->
   ('mutationVariables, 'mutationData, 'mutationError, 'unknown) mutationResult
   = "useMutation"
-[@@module "@tanstack/react-query"]
+[@@mel.module "@tanstack/react-query"]

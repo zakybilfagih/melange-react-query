@@ -2,18 +2,21 @@
 opam-version: "2.0"
 version: "0.1.0"
 synopsis: "React Query support for Melange"
-maintainer: ["Torben Ewert <torben@ewert-online.com>"]
-authors: ["Torben Ewert <torben@ewert-online.com>"]
+maintainer: ["M. Zaki <zilonesauer@gmail.com>"]
+authors: ["M. Zaki <zilonesauer@gmail.com>"]
 license: "MIT"
-homepage: "https://github.com/ewert-online/melange-react-query"
-bug-reports: "https://github.com/ewert-online/melange-react-query"
+homepage: "https://github.com/zakybilfagih/melange-react-query"
+bug-reports: "https://github.com/zakybilfagih/melange-react-query"
 depends: [
-  "dune" {>= "3.8"}
-  "ocaml" {>= "5.1"}
-  "melange" {>= "2.0.0"}
+  "dune" {>= "3.14"}
+  "ocaml" {>= "5.1.1"}
+  "melange" {>= "3.0.0-51"}
+  "reason" {>= "3.10.0"}
   "reason-react"
   "reason-react-ppx"
   "opam-check-npm-deps" {with-test}
+  "ocaml-lsp-server" {with-test}
+  "dot-merlin-reader" {with-test}
   "odoc" {with-doc}
 ]
 build: [
@@ -30,7 +33,11 @@ build: [
     "@doc" {with-doc}
   ]
 ]
-dev-repo: "git+https://github.com/ewert-online/melange-react-query.git"
+dev-repo: "git+https://github.com/zakybilfagih/melange-react-query.git"
 depexts: [
-  ["@tanstack/react-query"] {npm-version = "^4.2.1"}
+  ["@tanstack/react-query"] {npm-version = "^5.20.1"}
+]
+pin-depends: [
+  ["reason-react.dev" "https://github.com/reasonml/reason-react/archive/47da6ae6e11d49363d59313b9fe5c5968ba13045.tar.gz"]
+  ["reason-react-ppx.dev" "https://github.com/reasonml/reason-react/archive/47da6ae6e11d49363d59313b9fe5c5968ba13045.tar.gz"]
 ]

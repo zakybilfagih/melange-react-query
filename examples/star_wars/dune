@@ -1,0 +1,16 @@
+(include_subdirs qualified)
+
+(library
+ (name examples_star_wars)
+ (libraries reason-react melange-fetch react_query helpers melange-webapi)
+ (flags :standard -w -37-69 -open Ppx_deriving_json_runtime.Primitives)
+ (preprocess
+  (pps melange.ppx reason-react-ppx ppx_deriving_json.browser))
+ (modes melange))
+
+(melange.emit
+ (libraries examples_star_wars)
+ (modules)
+ (target output)
+ (runtime_deps vite.config.js index.html)
+ (module_systems es6))

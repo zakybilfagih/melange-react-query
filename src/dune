@@ -1,6 +1,9 @@
+(include_subdirs unqualified)
+
 (library
- (name ReactQuery)
+ (name react_query)
  (public_name melange-react-query)
+ (wrapped false)
  (libraries reason-react)
  (preprocess
   (pps melange.ppx reason-react-ppx))

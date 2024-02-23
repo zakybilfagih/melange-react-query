@@ -9,17 +9,17 @@ type ('queryKey, 'queryData, 'queryError) infiniteQueryOptions = {
   queryKey : 'queryKey option;
   queryFn : ('queryKey inifiniteQueryFunctionContext -> 'queryData Js.Promise.t) option;
   enabled : bool option;
-  retry : 'queryError ReactQuery_Types.retryValue option;
+  retry : 'queryError ReactQuery__Types.retryValue option;
   retryOnMount : bool option;
-  retryDelay : 'queryError ReactQuery_Types.retryDelayValue option;
-  staleTime : ReactQuery_Types.timeValue option;
+  retryDelay : 'queryError ReactQuery__Types.retryDelayValue option;
+  staleTime : ReactQuery__Types.timeValue option;
   queryKeyHashFn : ('queryKey -> string) option;
-  refetchInterval : ReactQuery_Types.refetchIntervalValue option;
+  refetchInterval : ReactQuery__Types.refetchIntervalValue option;
   refetchIntervalInBackground : bool option;
-  refetchOnMount : ReactQuery_Types.boolOrAlwaysValue option;
-  refetchOnWindowFocus : ReactQuery_Types.boolOrAlwaysValue option;
-  refetchOnReconnect : ReactQuery_Types.boolOrAlwaysValue option;
-  notifyOnChangeProps : ReactQuery_Types.notifyOnChangePropsValue option;
+  refetchOnMount : ReactQuery__Types.boolOrAlwaysValue option;
+  refetchOnWindowFocus : ReactQuery__Types.boolOrAlwaysValue option;
+  refetchOnReconnect : ReactQuery__Types.boolOrAlwaysValue option;
+  notifyOnChangeProps : ReactQuery__Types.notifyOnChangePropsValue option;
   notifyOnChangePropsExclusions : string array option;
   onSuccess : ('queryData -> unit) option;
   onError : ('queryError -> unit) option;
@@ -99,7 +99,7 @@ let infiniteQueryOptions
 ;;
 
 type ('queryError, 'queryData) infiniteQueryResult = {
-  status : ReactQuery_Types.queryStatus;
+  status : ReactQuery__Types.queryStatus;
   isIdle : bool;
   isError : bool;
   isFetched : bool;
@@ -117,10 +117,10 @@ type ('queryError, 'queryData) infiniteQueryResult = {
   errorUpdatedAt : int;
   failureCount : int;
   refetch :
-    ReactQuery_Types.refetchOptions ->
+    ReactQuery__Types.refetchOptions ->
     ('queryError, 'queryData) infiniteQueryResult Js.Promise.t;
   remove : unit -> unit;
-  data : 'queryData ReactQuery_Types.infiniteData option;
+  data : 'queryData ReactQuery__Types.infiniteData option;
   isFetchingNextPage : bool;
   isFetchingPreviousPage : bool;
   fetchNextPage : unit -> unit;
@@ -132,4 +132,4 @@ external useInfiniteQuery :
   ('queryKey, 'queryData, 'queryError) infiniteQueryOptions ->
   ('queryError, 'queryData) infiniteQueryResult
   = "useInfiniteQuery"
-[@@module "@tanstack/react-query"]
+[@@mel.module "@tanstack/react-query"]

@@ -44,9 +44,15 @@ type 'data getNextPageParamFunction = {
 
 let getNextPageParamFunction ~lastPage ~allPages = { lastPage; allPages }
 
-type ('error, 'data, 'queryData, 'queryKey, 'pageParam) queryObserverOptions = {
-  retry : 'error ReactQuery_Types.retryValue option; [@optional]
-  retryDelay : 'error ReactQuery_Types.retryValue option; [@optional]
+type ('error,
+       'data,
+       'queryData,
+       'queryKey,
+       'pageParam,
+       'queryContextMeta)
+     queryObserverOptions = {
+  retry : 'error ReactQuery__Types.retryValue option; [@optional]
+  retryDelay : 'error ReactQuery__Types.retryValue option; [@optional]
   cacheTime : int option; [@optional]
   isDataEqual : ('data option -> 'data -> bool) option; [@optional]
   queryHash : string option; [@optional]
@@ -61,11 +67,11 @@ type ('error, 'data, 'queryData, 'queryKey, 'pageParam) queryObserverOptions = {
   defaulted : bool option; [@optional]
   enabled : bool option; [@optional]
   staleTime : int option; [@optional]
-  refetchInterval : ReactQuery_Types.refetchIntervalValue option; [@optional]
+  refetchInterval : ReactQuery__Types.refetchIntervalValue option; [@optional]
   refetchIntervalInBackground : bool option; [@optional]
-  refetchOnWindowFocus : ReactQuery_Types.boolOrAlwaysValue option; [@optional]
-  refetchOnReconnect : ReactQuery_Types.boolOrAlwaysValue option; [@optional]
-  refetchOnMount : ReactQuery_Types.boolOrAlwaysValue option; [@optional]
+  refetchOnWindowFocus : ReactQuery__Types.boolOrAlwaysValue option; [@optional]
+  refetchOnReconnect : ReactQuery__Types.boolOrAlwaysValue option; [@optional]
+  refetchOnMount : ReactQuery__Types.boolOrAlwaysValue option; [@optional]
   retryOnMount : bool option; [@optional]
   notifyOnChangeProps : notifyOnChangePropsKeys array option; [@optional]
   notifyOnChangePropsExclusions : bool array option; [@optional]
@@ -76,15 +82,23 @@ type ('error, 'data, 'queryData, 'queryKey, 'pageParam) queryObserverOptions = {
   select : ('queryData -> 'data) option; [@optional]
   suspense : bool option; [@optional]
   keepPreviousData : bool option; [@optional]
-  placeholderData : ReactQuery_Types.placeholderDataValue option; [@optional]
+  placeholderData : ReactQuery__Types.placeholderDataValue option; [@optional]
   optimisticResults : bool option; [@optional]
   queryFn :
-    ('queryKey, 'pageParam) ReactQuery_Types.queryFunctionContext ->
+    ('queryKey, 'pageParam, 'queryContextMeta) ReactQuery__Types.queryFunctionContext ->
     'queryData Js.Promise.t;
 }
 
-type ('error, 'data, 'queryData, 'queryKey, 'pageParam) defaultOptions = {
-  queries : ('error, 'data, 'queryData, 'queryKey, 'pageParam) queryObserverOptions option;
+type ('error, 'data, 'queryData, 'queryKey, 'pageParam, 'queryContextMeta) defaultOptions = {
+  queries :
+    ( 'error,
+      'data,
+      'queryData,
+      'queryKey,
+      'pageParam,
+      'queryContextMeta )
+    queryObserverOptions
+    option;
 }
 
 let defaultOptions ?queries () = { queries }
@@ -109,7 +123,7 @@ let invalidateQueryOptions ?queryKey ?filters ?refetchOptions () =
 
 type 'queryKey refetchQueriesOptions = {
   queryKey : 'queryKey option;
-  filters : 'queryKey ReactQuery_Types.queryFilter option;
+  filters : 'queryKey ReactQuery__Types.queryFilter option;
   refetchOptions : clientRefetchOptions option;
 }
 
@@ -119,7 +133,7 @@ let refetchQueriesOptions ?queryKey ?filters ?refetchOptions () =
 
 type 'queryKey cancelQueriesOptions = {
   queryKey : 'queryKey option;
-  filters : 'queryKey ReactQuery_Types.queryFilter option;
+  filters : 'queryKey ReactQuery__Types.queryFilter option;
 }
 
 let cancelQueriesOptions ?queryKey ?filters () = { queryKey; filters }
@@ -136,21 +150,21 @@ type ('queryData, 'queryError) queryState = {
   isFetching : bool;
   isInvalidated : bool;
   isPaused : bool;
-  status : ReactQuery_Types.queryStatus;
+  status : ReactQuery__Types.queryStatus;
 }
 
-type ('queryKey, 'queryData, 'queryError, 'pageParam) fetchQueryOptions = {
+type ('queryKey, 'queryData, 'queryError, 'pageParam, 'queryContextMeta) fetchQueryOptions = {
   queryKey : 'queryKey option;
   queryFn :
-    (('queryKey, 'pageParam) ReactQuery_Types.queryFunctionContext ->
+    (('queryKey, 'pageParam, 'queryContextMeta) ReactQuery__Types.queryFunctionContext ->
     'queryData Js.Promise.t)
     option;
-  retry : 'queryError ReactQuery_Types.retryValue option;
+  retry : 'queryError ReactQuery__Types.retryValue option;
   retryOnMount : bool option;
-  retryDelay : 'queryError ReactQuery_Types.retryDelayValue option;
-  staleTime : ReactQuery_Types.timeValue option;
+  retryDelay : 'queryError ReactQuery__Types.retryDelayValue option;
+  staleTime : ReactQuery__Types.timeValue option;
   queryKeyHashFn : ('queryKey -> string) option;
-  refetchOnMount : ReactQuery_Types.boolOrAlwaysValue option;
+  refetchOnMount : ReactQuery__Types.boolOrAlwaysValue option;
   structuralSharing : bool option;
   initialData : ('queryData -> 'queryData) option;
   initialDataUpdatedAt : (unit -> int) option;
@@ -184,56 +198,59 @@ let fetchQueryOptions
   }
 ;;
 
-type ('queryKey, 'queryData, 'queryError, 'pageParams) queryClient = {
+type ('queryKey, 'queryData, 'queryError, 'pageParams, 'queryContextMeta) queryClient = {
   fetchQuery :
-    ('queryKey, 'queryData, 'queryError, 'pageParams) fetchQueryOptions ->
+    ('queryKey, 'queryData, 'queryError, 'pageParams, 'queryContextMeta) fetchQueryOptions ->
     'queryData Js.Promise.t;
   fetchInfiniteQuery :
-    ('queryKey, 'queryData, 'queryError, 'pageParams) fetchQueryOptions ->
-    'queryData ReactQuery_Types.infiniteData Js.Promise.t;
+    ('queryKey, 'queryData, 'queryError, 'pageParams, 'queryContextMeta) fetchQueryOptions ->
+    'queryData ReactQuery__Types.infiniteData Js.Promise.t;
   prefetchQuery :
-    ('queryKey, 'queryData, 'queryError, 'pageParams) fetchQueryOptions ->
+    ('queryKey, 'queryData, 'queryError, 'pageParams, 'queryContextMeta) fetchQueryOptions ->
     unit Js.Promise.t;
   prefetchInfiniteQuery :
-    ('queryKey, 'queryData, 'queryError, 'pageParams) fetchQueryOptions ->
+    ('queryKey, 'queryData, 'queryError, 'pageParams, 'queryContextMeta) fetchQueryOptions ->
     unit Js.Promise.t;
-  getQueryData : 'queryKey -> 'queryData option;
   setQueryData : 'queryKey -> 'queryData option -> 'queryData;
   getQueryState :
     'queryKey ->
-    'queryKey ReactQuery_Types.queryFilter ->
+    'queryKey ReactQuery__Types.queryFilter ->
     ('queryData, 'queryError) queryState;
   setQueriesData :
-    'queryKey ReactQuery_Types.queryDataKeyOrFilterValue ->
+    'queryKey ReactQuery__Types.queryDataKeyOrFilterValue ->
     ('queryData option -> 'queryData) ->
     unit;
   invalidateQueries :
-    'queryKey ReactQuery_Types.queryFilter option ->
+    'queryKey ReactQuery__Types.queryFilter option ->
     clientRefetchOptions option ->
     unit Js.Promise.t;
   refetchQueries :
-    'queryKey ReactQuery_Types.queryFilter option ->
+    'queryKey ReactQuery__Types.queryFilter option ->
     clientRefetchOptions option ->
     unit Js.Promise.t;
-  cancelQueries : 'queryKey ReactQuery_Types.queryFilter option -> unit Js.Promise.t;
-  removeQueries : 'queryKey ReactQuery_Types.queryFilter option -> unit Js.Promise.t;
+  cancelQueries : 'queryKey ReactQuery__Types.queryFilter option -> unit Js.Promise.t;
+  removeQueries : 'queryKey ReactQuery__Types.queryFilter option -> unit Js.Promise.t;
   resetQueries :
-    'queryKey ReactQuery_Types.queryFilter option ->
+    'queryKey ReactQuery__Types.queryFilter option ->
     clientRefetchOptions option ->
     unit Js.Promise.t;
-  isFetching : 'queryKey ReactQuery_Types.queryFilter option -> bool;
-  isMutating : 'queryKey ReactQuery_Types.queryFilter option -> bool;
+  isFetching : 'queryKey ReactQuery__Types.queryFilter option -> bool;
+  isMutating : 'queryKey ReactQuery__Types.queryFilter option -> bool;
   clear : unit -> unit;
 }
 
+external getQueryData : ReactQuery__Types.queryKeyValue -> 'queryData option = "getQueryData"
+[@@mel.send.pipe:
+  ('queryKey, 'queryData, 'queryError, 'pageParams, 'queryContextMeta) queryClient]
+
 external useQueryClient :
-  unit -> ('queryKey, 'queryData, 'queryError, 'pageParams) queryClient
+  unit -> ('queryKey, 'queryData, 'queryError, 'pageParams, 'queryContextMeta) queryClient
   = "useQueryClient"
-[@@module "@tanstack/react-query"]
+[@@mel.module "@tanstack/react-query"]
 
 module Provider = struct
   external createClient : unit -> queryClientValue = "QueryClient"
-  [@@new] [@@module "@tanstack/react-query"]
+  [@@mel.new] [@@mel.module "@tanstack/react-query"]
 
   external make :
     client:queryClientValue ->
@@ -241,5 +258,5 @@ module Provider = struct
     children:React.element ->
     React.element
     = "QueryClientProvider"
-  [@@module "@tanstack/react-query"] [@@react.component]
+  [@@mel.module "@tanstack/react-query"] [@@react.component]
 end

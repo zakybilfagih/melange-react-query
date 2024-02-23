@@ -1,0 +1,21 @@
+(dirs :standard \ node_modules)
+
+(library
+ (name examples_basic)
+ (libraries
+  reason-react
+  melange-fetch
+  react_query
+  helpers
+  ppx_deriving_json.browser_runtime)
+ (flags :standard -w -37-69 -open Ppx_deriving_json_runtime.Primitives)
+ (preprocess
+  (pps melange.ppx reason-react-ppx ppx_deriving_json.browser))
+ (modes melange))
+
+(melange.emit
+ (libraries examples_basic)
+ (modules)
+ (target output)
+ (runtime_deps vite.config.js index.html)
+ (module_systems es6))

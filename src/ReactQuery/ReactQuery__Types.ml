@@ -1,4 +1,5 @@
 type query
+type queryKeyValue
 type timeValue
 type boolOrAlwaysValue
 type refetchIntervalValue
@@ -8,12 +9,13 @@ type 'queryError retryDelayValue
 type 'queryKey queryDataKeyOrFilterValue
 type placeholderDataValue
 
-type ('queryKey, 'pageParam) queryFunctionContext = {
+type ('queryKey, 'pageParam, 'queryContextMeta) queryFunctionContext = {
   queryKey : 'queryKey;
   pageParam : 'pageParam;
+  meta : 'queryContextMeta Js.t Js.Undefined.t;
 }
 
-let queryFunctionContext ~queryKey ~pageParam = { queryKey; pageParam }
+let queryFunctionContext ~queryKey ~pageParam ~meta = { queryKey; pageParam; meta }
 
 type 'error retryParam =
   [ `bool of bool
@@ -54,10 +56,22 @@ type 'queryData infiniteData = {
 let infiniteData ~pages ~pageParams = { pages; pageParams }
 
 type queryStatus =
-  [ `loading
-  | `success
+  [ `pending
   | `error
-  | `initialData
+  | `success
+  ]
+
+type fetchStatus =
+  [ `fetching
+  | `pending
+  | `paused
+  | `idle
+  ]
+
+type networkMode =
+  [ `online
+  | `always
+  | `offlineFirst
   ]
 
 type ('queryData, 'queryResult) placeholderData =
@@ -67,7 +81,7 @@ type ('queryData, 'queryResult) placeholderData =
 
 type 'queryKey queryFilter = {
   exact : bool option;
-  type_ : [ `active | `inactive | `all ] option; [@as "type"]
+  type_ : [ `active | `inactive | `all ] option; [@mel.as "type"]
   stale : bool option;
   fetching : bool option;
   predicate : (query -> bool) option;
